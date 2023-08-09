@@ -34,7 +34,7 @@ def read_tsp_file(file_name: str):
         File name to read.
     """
     # Find the index of the line where the coordinates start
-    with open("data/dj38.tsp", "r") as f:
+    with open(file_name, "r") as f:
         lines = f.readlines()
 
     for index, line in enumerate(lines):
