@@ -79,6 +79,37 @@ def distance_matrix(df: pd.DataFrame):
     return distances
 
 
+def compress_distance(distance_matrix: np.ndarray, k: int):
+    """Compresses the distance matrix by keeping only the k nearest cities for \
+    each city. Returns the compressed distance matrix and the indices of the \
+    k nearest cities.
+
+    Parameters
+    ----------
+    distance_matrix : np.ndarray
+        Distance matrix between each city.
+    k : int
+        Number of nearest cities to keep.
+
+    Returns
+    -------
+    tuple[np.ndarray, np.ndarray]
+        Two arrays of shape (n_cities, k) containing the distances and the \
+        indices of the k nearest cities for each city.
+    """
+    k_near_distance = np.zeros(
+        shape=(distance_matrix.shape[0], k), dtype=distance_matrix.dtype
+    )
+    k_near_cities = np.zeros(shape=(distance_matrix.shape[0], k), dtype=np.int32)
+    for i, dist in enumerate(distance_matrix):
+        # Find k nearest cities of city i
+        k_near = np.argpartition(dist, k)[:k]
+        # Save distances and cities
+        k_near_distance[i] = dist[k_near]
+        k_near_cities[i] = k_near
+    return k_near_distance, k_near_cities
+
+
 def plot_solution_path(
     df: pd.DataFrame,
     solution: np.ndarray,
