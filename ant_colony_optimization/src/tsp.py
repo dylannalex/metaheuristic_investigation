@@ -70,6 +70,12 @@ def distance_matrix(df: pd.DataFrame):
     # Calculate the Euclidean distances
     distances = np.sqrt(distances_sq)
 
+    # Set the diagonal to infinity
+    distances[np.diag_indices_from(distances)] = np.inf
+
+    # Avoid division by zero (on heuristic computation)
+    distances[distances == 0] += 1e-10
+
     return distances
 
 
